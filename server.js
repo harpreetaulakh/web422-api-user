@@ -61,16 +61,17 @@ app.post("/api/user/register", (req, res) => {
 });
 
 app.post("/api/user/login", (req, res) => {
+    console.log(req.body)
     userService.checkUser(req.body)
     .then((user) => {
         let payload = {
-            _id: jwt_payload._id,
-            userName: jwt_payload.userName,
+            _id: user._id,
+            userName: user.userName,
         }
         let token = jwt.sign(payload, jwtOptions.secretOrKey);
         res.json({ "message": "Login successful", token: token });
     }).catch(msg => {
-        res.status(422).json({ "message": msg });
+        res.status(422).json({ "message": msg.message });
     });
 });
 
